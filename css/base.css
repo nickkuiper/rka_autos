@@ -1,0 +1,291 @@
+@import url('https://fonts.googleapis.com/css2?family=Archivo+Black&family=DM+Sans:wght@400;500;600&display=swap');
+
+:root {
+  --primary: #2200A3;
+  --primary-soft: rgba(34, 0, 163, 0.15);
+  --primary-soft-strong: rgba(34, 0, 163, 0.3);
+  --text-accent: #4F46E5;
+  --secondary: #ff6f61;
+
+  --bg-dark: #0D0D0D;
+  --bg-soft: #131313;
+  --bg-softer: #1A1A1A;
+
+  --text-light: #F5F5F7;
+  --text-dark: #1A1A1A;
+  --text-muted: #808080;
+
+  --border-color: #262626;
+  --border-subtle: rgba(255, 255, 255, 0.1);
+  --muted: var(--text-muted);
+
+  --font-heading: 'Archivo Black', sans-serif;
+  --font-body: 'DM Sans', sans-serif;
+
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+
+  --container-width: min(1200px, 100% - 48px);
+  --shadow-high: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  --shadow-low: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--bg-dark);
+  color: var(--text-light);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
+    font-weight: 600;
+    letter-spacing: 0.02em;
+}
+
+.page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden; /* Voorkomt horizontale scroll door animaties */
+}
+
+.container {
+  width: var(--container-width);
+  margin-inline: auto;
+}
+
+/* Knoppen & pills */
+
+.btn {
+  border-radius: 999px;
+  padding: 12px 28px;
+  border: none;
+  background: linear-gradient(45deg, var(--primary), #1A0082); /* Gradient background */
+  background-size: 200% 200%; /* For hover effect */
+  color: var(--text-light);
+  font-weight: 600;
+  font-size: 14px;
+  font-family: var(--font-heading);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background-position 0.4s ease; /* Add background-position to transition */
+  box-shadow: var(--shadow-low);
+}
+
+.btn span {
+  font-size: 18px;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-high);
+  background-position: 100% 0; /* Shift gradient on hover */
+}
+
+.btn-secondary {
+  padding: 8px 15px;
+  border-radius: 999px;
+  border: 1px solid var(--border-subtle);
+  background: rgba(12, 14, 22, 0.9);
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.btn-secondary span {
+  font-size: 16px;
+}
+
+.pill {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--primary-soft-strong);
+  background: radial-gradient(circle at 0 0, rgba(34, 0, 163, 0.36), transparent 55%);
+  color: #f5f5f7;
+  font-weight: 600;
+}
+
+/* Secties */
+
+.section {
+  padding-block: 40px;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.section-title {
+  font-size: 20px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.section-subtitle {
+  font-size: 13px;
+  color: var(--muted);
+  max-width: 360px;
+}
+
+/* Chips */
+
+.chip,
+.chip-small {
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.03);
+  font-size: 11px;
+  color: var(--muted);
+  padding: 2px 7px;
+}
+
+.chip-small {
+  padding: 2px 6px;
+}
+
+/* Algemene car card (basis) – kan op beide pagina’s gebruikt worden */
+
+.car-card {
+  position: relative;
+  border-radius: var(--radius-lg);
+  background: linear-gradient(160deg, rgba(12, 16, 27, 0.92) 8%, rgba(6, 9, 16, 0.88) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 28px 60px -36px rgba(0, 0, 0, 0.85);
+  transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
+}
+
+.car-image-wrap {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 16/10;
+}
+
+.car-image-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: scale(1.04);
+  transition: transform 0.35s ease;
+}
+
+.car-card:hover .car-image-wrap img {
+  transform: scale(1.08);
+}
+
+.car-content {
+  padding: 24px 26px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.car-title-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.car-title {
+  font-size: 20px;
+  font-weight: 600;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+  letter-spacing: 0.08em;
+}
+
+.car-year {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.car-card-specs,
+.car-description {
+  font-size: 13px;
+  color: var(--text-muted);
+  display: flex;
+  gap: 10px;
+  margin-bottom: 4px;
+  flex-wrap: wrap;
+}
+
+.car-meta-row,
+.car-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 4px;
+  font-size: 12px;
+}
+
+.car-chips {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.car-price-block {
+  text-align: right;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.car-price {
+  font-weight: 600;
+  font-size: 13px;
+}
+
+.car-lease {
+  font-size: 11px;
+  color: var(--muted);
+}
+
+/* Responsive basis */
+
+@media (max-width: 720px) {
+  .container {
+    width: min(100% - 28px, 640px);
+  }
+}

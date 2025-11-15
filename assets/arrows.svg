@@ -1,0 +1,17 @@
+<svg width="86" height="58" viewBox="0 0 86 58" xmlns="http://www.w3.org/2000/svg">
+  <style>
+    .arrow {
+      fill: none;
+      stroke: #fff;
+      stroke-width: 4;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+  </style>
+  <g id="left-arrow">
+    <polyline class="arrow" points="30 10 10 29 30 48"/>
+  </g>
+  <g id="right-arrow">
+    <polyline class="arrow" points="56 10 76 29 56 48"/>
+  </g>
+</svg>
