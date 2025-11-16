@@ -236,6 +236,7 @@
 /* --- New Lifestyle Gallery --- */
 .lifestyle-gallery-section {
     padding-block: 80px;
+    
 }
 
 .lifestyle-gallery-header {
@@ -265,10 +266,7 @@
     grid-auto-rows: minmax(5vw, auto);
     gap: 20px;
     padding: 3vw;
-    background-color: var(--bg-soft);
-    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
     border-radius: 8px;
-    border: 1px solid var(--border-color);
 }
 
 .gallery-item {

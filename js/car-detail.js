@@ -67,10 +67,59 @@ function embedIframe(car) {
   const iframe = createHTMLElement('iframe', null, null, {
     width: '100%',
     height: '800',
-    src: `https://iframe.financiallease.nl/dealer/calculator?calculator_id=953&background_color=f0f0f0&primary_color=2205a0&secondary_color=2205a0&text_color=000000&voertuig=p&aanschafwaarde=${car.priceNum}`,
+    src: `https://iframe.financiallease.nl/dealer/calculator?calculator_id=953&background_color=0D0D0D&primary_color=2205a0&secondary_color=2205a0&text_color=F5F5F7&voertuig=p&aanschafwaarde=${car.priceNum}`,
     frameBorder: '0'
   });
   leaseIframe.appendChild(iframe);
+}
+
+function animateCountUp(element, endValue, duration = 1500) {
+  const startValue = 0;
+  const range = endValue - startValue;
+  let startTime = null;
+
+  function step(timestamp) {
+    if (!startTime) {
+      startTime = timestamp;
+    }
+
+    const progress = Math.min((timestamp - startTime) / duration, 1);
+    const current = Math.floor(progress * range + startValue);
+    
+    // Use formatNumber to add dots for thousands
+    element.textContent = formatNumber(current);
+
+    if (progress < 1) {
+      requestAnimationFrame(step);
+    } else {
+      // Ensure the final value is exactly the end value, correctly formatted
+      element.textContent = formatNumber(endValue);
+    }
+  }
+
+  requestAnimationFrame(step);
+}
+
+function startCountUpAnimations() {
+  const highlightCards = document.querySelectorAll('.highlight-card');
+  highlightCards.forEach(card => {
+    const valueElement = card.querySelector('.highlight-card__value');
+    const labelElement = card.querySelector('.highlight-card__label');
+
+    if (valueElement && labelElement) {
+      const label = labelElement.textContent.toLowerCase();
+      const rawValue = valueElement.textContent;
+
+      // Only animate "Kilometerstand" and "Bouwjaar"
+      if (label.includes('kilometerstand') || label.includes('bouwjaar')) {
+        // Extract number from the value string, removing dots for thousands
+        const endValue = parseInt(rawValue.replace(/\./g, '').replace(/,/g, ''), 10);
+        if (!isNaN(endValue)) {
+          animateCountUp(valueElement, endValue);
+        }
+      }
+    }
+  });
 }
 
 function renderCarDetails(car) {
@@ -330,7 +379,65 @@ function renderCarDetails(car) {
     </section>
   `;
 
+  function animateCountUp(element, endValue, useFormatting = true, duration = 800) {
+  const startValue = 0;
+  const range = endValue - startValue;
+  let startTime = null;
+
+  function step(timestamp) {
+    if (!startTime) {
+      startTime = timestamp;
+    }
+
+    const progress = Math.min((timestamp - startTime) / duration, 1);
+    const current = Math.floor(progress * range + startValue);
+
+    if (useFormatting) {
+      element.textContent = formatNumber(current);
+    } else {
+      element.textContent = current;
+    }
+
+    if (progress < 1) {
+      requestAnimationFrame(step);
+    } else {
+      if (useFormatting) {
+        element.textContent = formatNumber(endValue);
+      } else {
+        element.textContent = endValue;
+      }
+    }
+  }
+
+  requestAnimationFrame(step);
+}
+
+function startCountUpAnimations() {
+  const highlightCards = document.querySelectorAll('.highlight-card');
+  highlightCards.forEach(card => {
+    const valueElement = card.querySelector('.highlight-card__value');
+    const labelElement = card.querySelector('.highlight-card__label');
+
+    if (valueElement && labelElement) {
+      const label = labelElement.textContent.toLowerCase();
+      const rawValue = valueElement.textContent;
+
+      const endValue = parseInt(rawValue.replace(/\./g, '').replace(/,/g, ''), 10);
+      if (!isNaN(endValue)) {
+        if (label.includes('kilometerstand')) {
+          animateCountUp(valueElement, endValue, true);
+        } else if (label.includes('bouwjaar')) {
+          animateCountUp(valueElement, endValue, false);
+        }
+      }
+    }
+  });
+}
+
   mainContent.innerHTML = carDetailHtml;
+
+  // Start animations after rendering the HTML
+  startCountUpAnimations();
 
   if (window.jQuery && typeof window.jQuery === 'function' && window.jQuery.fn.touchTouch) {
     window.jQuery('.photo_touch').touchTouch();
@@ -525,3 +632,6 @@ function renderCarDetails(car) {
 // Placeholder for global variables from inspiration (if needed)
 var pgkind = 3; // Example value
 var curr_url = window.location.href; // Example value
+
+// Start animations after rendering the HTML
+startCountUpAnimations();

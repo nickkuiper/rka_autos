@@ -11,6 +11,24 @@ document.addEventListener("DOMContentLoaded", () => {
   if (toggle && header) {
     toggle.addEventListener("click", () => {
       header.classList.toggle("nav-open");
+      if (header.classList.contains("nav-open")) {
+        toggle.innerHTML = "✕";
+      } else {
+        toggle.innerHTML = "☰";
+      }
     });
   }
+
+  // Sticky header on scroll
+  const scrollHeader = () => {
+    if (header) {
+      if (window.scrollY >= 50) {
+        header.classList.add("header-scrolled");
+      } else {
+        header.classList.remove("header-scrolled");
+      }
+    }
+  };
+  window.addEventListener("scroll", scrollHeader);
+  scrollHeader(); // Run on load
 });

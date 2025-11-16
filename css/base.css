@@ -68,7 +68,6 @@ h1, h2, h3, h4, h5, h6 {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  overflow-x: hidden; /* Voorkomt horizontale scroll door animaties */
 }
 
 .container {
@@ -82,7 +81,7 @@ h1, h2, h3, h4, h5, h6 {
   border-radius: 999px;
   padding: 12px 28px;
   border: none;
-  background: linear-gradient(45deg, var(--primary), #1A0082); /* Gradient background */
+  background: linear-gradient(45deg, var(--primary), #2f6aff); /* Gradient background */
   background-size: 200% 200%; /* For hover effect */
   color: var(--text-light);
   font-weight: 600;
@@ -128,15 +127,20 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .pill {
-  font-size: 11px;
-  text-transform: uppercase;
-  letter-spacing: 0.14em;
-  padding: 4px 10px;
-  border-radius: 999px;
-  border: 1px solid var(--primary-soft-strong);
-  background: radial-gradient(circle at 0 0, rgba(34, 0, 163, 0.36), transparent 55%);
-  color: #f5f5f7;
-  font-weight: 600;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    padding: 4px 10px;
+    border-radius: 999px;
+    border: 1px solid var(--primary-soft-strong);
+    background: var(--primary);
+    color: #f5f5f7;
+    font-weight: 600;
+
+    display: inline-block;    /* or inline-flex */
+    width: auto;              /* make sure no fixed/100% width is applied */
+    align-self: flex-start;  /* override stretch just for the pill */
+    white-space: nowrap;     /* optional */
 }
 
 /* Secties */

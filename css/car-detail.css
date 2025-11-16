@@ -132,6 +132,9 @@
   padding: 18px 16px;
   text-align: center;
   box-shadow: var(--shadow-low);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .highlight-card__value {
@@ -140,6 +143,7 @@
   font-size: 1.6rem;
   color: var(--text-light);
   margin-bottom: 6px;
+  word-wrap: break-word;
 }
 
 .highlight-card__label {
@@ -272,7 +276,7 @@
 
 .gallery-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 15px;
 }
 
@@ -378,7 +382,7 @@
 }
 
 .contact-toggle {
-  background: linear-gradient(45deg, var(--primary), #1A0082); /* Gradient background */
+  background: linear-gradient(45deg, var(--primary), #2f6aff); /* Gradient background */
   background-size: 200% 200%; /* For hover effect */
   color: var(--text-light);
   border: none;
@@ -505,10 +509,6 @@
     grid-template-columns: 1fr;
   }
 
-  .hero-content {
-    order: -1; /* Move content above media on smaller screens */
-  }
-
   .detail-bottom__grid {
     grid-template-columns: 1fr;
   }
@@ -601,3 +601,4 @@
 #toggle-lease-calculator {
   margin-bottom: 20px;
 }
+
