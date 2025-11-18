@@ -56,7 +56,11 @@
 }
 
 .hero-title span {
-  color: var(--primary);
+  background: linear-gradient(45deg, var(--primary), var(--text-accent));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-fill-color: transparent;
 }
 
 .hero-subtitle {
@@ -236,7 +240,8 @@
 /* --- New Lifestyle Gallery --- */
 .lifestyle-gallery-section {
     padding-block: 80px;
-    
+    background-color: var(--bg-soft);
+
 }
 
 .lifestyle-gallery-header {
