@@ -47,7 +47,7 @@
 }
 
 .nav-link {
-  font-family: var(--font-body);
+  font-family: var(--font-heading);
   font-size: 15px;
   font-weight: 600;
   letter-spacing: 0.03em;

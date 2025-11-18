@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <title>{{ car.merk }} {{ car.model }} {{ car.uitvoering or '' }} | Rody Kuiper Auto's</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Te koop: {{ car.merk }} {{ car.model }} {{ car.uitvoering or '' }} van bouwjaar {{ car.bouwjaar_year }} met {{ car.km_stand_formatted }} km. Bekijk alle specificaties en foto's." />
+  <link rel="canonical" href="https://www.rodykuiper.nl/voorraad/{{ car.slug }}-{{ car.id }}.html" />
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="../css/base.css" />
+  <link rel="stylesheet" href="../css/layout.css" />
+  <link rel="stylesheet" href="../css/car-detail.css" />
+  <link rel="stylesheet" href="../css/touchTouch.css" />
+</head>
+<body data-price-num="{{ car.priceNum }}">
+  <div class="page">
+    <!-- Header -->
+    <header class="header">
+      <div class="container nav">
+        <a href="../index.html" class="brand">
+          <img src="../assets/logo-header.png" alt="Rody Kuiper Auto's Logo" class="brand-logo">
+        </a>
+
+        <nav class="nav-links">
+          <a href="../index.html" class="nav-link">Home</a>
+          <a href="../voorraad.html" class="nav-link is-active">Aanbod</a>
+          <a href="../lease.html" class="nav-link">Lease</a>
+          <a href="../contact.html" class="nav-link">Contact</a>
+        </nav>
+
+        <div class="nav-cta">
+          <a href="tel:+31638058069" class="btn">
+            Bel Nu
+            <span>→</span>
+          </a>
+        </div>
+
+        <button class="mobile-toggle" aria-label="Open menu">
+          ☰
+        </button>
+      </div>
+    </header>
+
+    <!-- Main -->
+    <main id="car-detail-main" class="car-detail-page">
+      <section class="detail-hero">
+        <div class="container">
+          <div class="hero-header">
+            <a href="../voorraad.html" class="hero-back">← Terug naar aanbod</a>
+            <h1 class="hero-title">{{ car.merk }} {{ car.model }}</h1>
+            {% if car.uitvoering %}<p class="hero-subtitle">{{ car.uitvoering }}</p>{% endif %}
+          </div>
+
+          <div class="detail-hero__grid">
+            <div class="hero-media">
+              {% if car.imgs %}
+                <a href="{{ car.imgs[0] }}" class="hero-image photo_touch" data-gallery="detail" data-index="0">
+                  <img src="{{ car.imgs[0] }}" alt="{{ car.merk }} {{ car.model }}">
+                  <span class="hero-image__hint">Klik om te vergroten</span>
+                </a>
+              {% else %}
+                <div class="hero-image hero-image--placeholder">
+                  <img src="../assets/img/cars/placeholder.svg" alt="Geen afbeelding beschikbaar">
+                </div>
+              {% endif %}
+              {% if car.imgs and car.imgs|length > 1 %}
+              <div class="hero-thumbs">
+                {% for img in car.imgs[1:4] %}
+                <a href="{{ img }}" class="thumb photo_touch" data-gallery="detail" data-index="{{ loop.index }}">
+                  <img src="{{ img }}" alt="{{ car.merk }} {{ car.model }} detail {{ loop.index + 1 }}">
+                </a>
+                {% endfor %}
+              </div>
+              {% endif %}
+            </div>
+            <div class="hero-content">
+              <div class="hero-highlights">
+                {% if car.km_stand_formatted %}
+                <article class="highlight-card">
+                  <span class="highlight-card__value">{{ car.km_stand_formatted }} km</span>
+                  <span class="highlight-card__label">Kilometerstand</span>
+                </article>
+                {% endif %}
+                {% if car.bouwjaar_year %}
+                <article class="highlight-card">
+                  <span class="highlight-card__value">{{ car.bouwjaar_year }}</span>
+                  <span class="highlight-card__label">Bouwjaar</span>
+                </article>
+                {% endif %}
+                {% if car.transmissie %}
+                <article class="highlight-card">
+                  <span class="highlight-card__value">{{ car.transmissie }}</span>
+                  <span class="highlight-card__label">Transmissie</span>
+                </article>
+                {% endif %}
+              </div>
+              {% if car.prijs %}<div class="hero-price">{{ car.prijs }}</div>{% endif %}
+              <div class="hero-description">{{ car.description_html|safe }}</div>
+              {% if car.fiche_link %}
+              <div class="hero-actions">
+                <a href="{{ car.fiche_link }}" class="btn hero-download" target="_blank" rel="noopener">Download fiche</a>
+              </div>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {% if not car.is_sold %}
+      <section class="lease-calculator-section container">
+        <button id="toggle-lease-calculator" class="btn primary-btn">Bereken uw leaseprijs</button>
+        <div id="lease-iframe-container" class="lease-iframe-container hidden">
+          <div id="lease-iframe"></div>
+        </div>
+      </section>
+      {% endif %}
+
+      <section class="specs-section section">
+        <div class="container">
+          <div class="section-header">
+            <h2 class="section-title">Belangrijkste specificaties</h2>
+            <p class="section-subtitle">Alle kerngegevens overzichtelijk bij elkaar.</p>
+          </div>
+          <div class="spec-grid">
+            {% for card in car.spec_cards %}
+            <article class="spec-card">
+              <span class="spec-card__label">{{ card.label }}</span>
+              <h3 class="spec-card__value">{{ card.value }}</h3>
+              <dl class="spec-card__details">
+                {% for item in card.details %}
+                <div class="spec-row">
+                  <dt>{{ item.label }}</dt>
+                  <dd>{{ item.value }}</dd>
+                </div>
+                {% endfor %}
+              </dl>
+            </article>
+            {% endfor %}
+          </div>
+        </div>
+      </section>
+
+      <section class="gallery-section section">
+        <div class="container">
+          <div class="gallery-card">
+            <div class="gallery-header">
+              <h2 class="section-title">Fotogalerij</h2>
+              <p class="section-subtitle">Klik op een afbeelding om te vergroten.</p>
+            </div>
+            <div class="gallery-grid collapsed">
+              {% if car.imgs %}
+                {% for img in car.imgs %}
+                <a href="{{ img }}" class="gallery-item photo_touch" data-gallery="detail" data-index="{{ loop.index0 }}">
+                  <img src="{{ img }}" alt="{{ car.merk }} {{ car.model }} foto {{ loop.index }}">
+                </a>
+                {% endfor %}
+              {% else %}
+                <p class="empty-state">Er zijn momenteel geen extra foto's beschikbaar.</p>
+              {% endif %}
+            </div>
+            {% if car.imgs and car.imgs|length > 1 %}
+            <button type="button" class="gallery-toggle" data-total="{{ car.imgs|length }}" aria-expanded="false">Toon alle {{ car.imgs|length }} foto's</button>
+            {% endif %}
+          </div>
+        </div>
+      </section>
+
+      <section class="detail-bottom section">
+        <div class="container detail-bottom__grid">
+          <article class="options-card">
+            <div class="section-header">
+              <h2 class="section-title">Optielijst</h2>
+              <p class="section-subtitle">Uitgebreide uitrusting zoals geleverd.</p>
+            </div>
+            <ul class="options-list">
+              {% if car['alle-opties'] %}
+                {% for option in car['alle-opties']|sort %}
+                  <li>{{ option }}</li>
+                {% endfor %}
+              {% else %}
+                <li>Geen optionele uitrusting geregistreerd.</li>
+              {% endif %}
+            </ul>
+          </article>
+
+          <aside class="contact-card">
+            <span class="pill">Contact</span>
+            <h2 class="contact-title">Interesse in deze wagen?</h2>
+            <p class="contact-subtitle">Laat uw gegevens achter en wij nemen zo snel mogelijk contact op.</p>
+            <button type="button" class="contact-toggle" aria-expanded="false">Vraag informatie aan</button>
+            <form id="contact_form" class="contact-form is-collapsed" aria-hidden="true" novalidate>
+              <label class="field" for="in_nm">
+                <span class="field-label">Naam</span>
+                <input type="text" id="in_nm" name="name" placeholder="Uw naam" autocomplete="name">
+              </label>
+              <label class="field" for="in_em">
+                <span class="field-label">E-mail</span>
+                <input type="email" id="in_em" name="email" placeholder="Uw e-mailadres" autocomplete="email">
+              </label>
+              <label class="field" for="in_qs">
+                <span class="field-label">Bericht</span>
+                <textarea id="in_qs" name="message" placeholder="Waar kunnen we u mee helpen?" rows="4"></textarea>
+              </label>
+              <button type="submit" class="btn contact-submit">Verzenden</button>
+            </form>
+            <div class="contact-result" aria-live="polite" hidden>
+              Bedankt voor uw bericht. We nemen zo snel mogelijk contact met u op.
+            </div>
+          </aside>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="container">
+        <div class="footer-inner">
+          <div class="footer-col">
+            <h4 class="footer-title">Rody Kuiper Auto's</h4>
+            <p>Exclusieve auto's, met passie en expertise voor u geselecteerd.</p>
+          </div>
+          <div class="footer-col">
+            <h4 class="footer-title">Navigatie</h4>
+            <a href="../index.html" class="footer-link">Home</a>
+            <a href="../voorraad.html" class="footer-link">Aanbod</a>
+            <a href="../lease.html" class="footer-link">Lease</a>
+            <a href="../contact.html" class="footer-link">Contact</a>
+          </div>
+          <div class="footer-col">
+            <h4 class="footer-title">Contact</h4>
+            <p>Industrieweg 34<br>7951 TA Staphorst</p>
+            <a href="tel:+31638058069" class="footer-link">(+31) 6 38 05 80 69</a>
+            <a href="mailto:rody@rodykuiper.nl" class="footer-link">rody@rodykuiper.nl</a>
+          </div>
+          <div class="footer-col">
+            <h4 class="footer-title">Openingstijden</h4>
+            <p>Flexibel op afspraak, ook 's avonds en in het weekend.</p>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <p>© <span id="year"></span> Rody Kuiper Auto's. Alle rechten voorbehouden.</p>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <!-- JS -->
+  <script src="../js/jquery-3.7.1.min.js"></script>
+  <script src="../js/main.js" defer></script>
+  <script src="../js/car-detail.js" defer></script>
+  <script src="../js/touchTouch.jquery.js" defer></script>
+</body>
+</html>

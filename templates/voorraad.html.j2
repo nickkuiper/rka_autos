@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <title>Aanbod - Rody Kuiper Auto's</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Ontdek onze actuele voorraad van exclusieve, sportieve en luxe auto's in nieuwstaat." />
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="css/base.css" />
+  <link rel="stylesheet" href="css/layout.css" />
+  <link rel="stylesheet" href="css/voorraad.css" />
+</head>
+<body>
+  <div class="page">
+    <!-- Header -->
+    <header class="header">
+      <div class="container nav">
+        <a href="index.html" class="brand">
+          <img src="assets/logo-header.png" alt="Rody Kuiper Auto's Logo" class="brand-logo">
+        </a>
+
+        <nav class="nav-links">
+          <a href="index.html" class="nav-link">Home</a>
+          <a href="voorraad.html" class="nav-link is-active">Aanbod</a>
+          <a href="lease.html" class="nav-link">Lease</a>
+          <a href="contact.html" class="nav-link">Contact</a>
+        </nav>
+
+        <div class="nav-cta">
+          <a href="tel:+31638058069" class="btn">
+            Bel Nu
+            <span>→</span>
+          </a>
+        </div>
+
+        <button class="mobile-toggle" aria-label="Open menu">
+          ☰
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+      <!-- Page Header -->
+      <section class="page-header">
+        <div class="container">
+          <h1 class="page-title">Ons Aanbod</h1>
+          <p class="page-subtitle">
+            Een met zorg samengestelde collectie van auto's die voldoen aan onze hoogste eisen.
+          </p>
+        </div>
+      </section>
+
+      <!-- Filters Bar -->
+      <section class="filters-bar">
+        <div class="container filters-container">
+          <div class="filter-group">
+            <label for="make-filters" class="filter-label">Filter op merk:</label>
+            <div id="make-filters" class="filter-options">
+              <!-- Dynamisch gevuld -->
+            </div>
+          </div>
+          <div class="filter-group">
+            <label for="sort-select" class="filter-label">Sorteer op:</label>
+            <select id="sort-select" class="sort-select">
+              <option value="default">Standaard</option>
+              <option value="price-asc">Prijs (laag naar hoog)</option>
+              <option value="price-desc">Prijs (hoog naar laag)</option>
+              <option value="km-asc">Kilometerstand (laag naar hoog)</option>
+              <option value="year-desc">Bouwjaar (nieuw naar oud)</option>
+            </select>
+          </div>
+        </div>
+      </section>
+
+      <!-- Inventory Grid -->
+      <section class="inventory-section">
+        <div class="container">
+          <div id="loading" class="loading-indicator" aria-hidden="true">
+            <div class="loading-spinner" role="status" aria-live="polite">
+              <span class="sr-only">Aanbod wordt geladen</span>
+            </div>
+          </div>
+          <div id="car-list" class="inventory-grid">
+            {% for car in cars %}
+            <article
+              class="car-card car-card--inventory"
+              data-id="{{ car.id }}"
+              data-merk="{{ car.merk }}"
+              data-price="{{ car.priceNum }}"
+              data-km="{{ car.km_stand_num }}"
+              data-year="{{ car.bouwjaar_year }}"
+              onclick="window.location.href='voorraad/{{ car.slug }}-{{ car.id }}.html'"
+              style="cursor: pointer;"
+            >
+              <div class="car-card__media">
+                <img src="{{ car.imgs[0] if car.imgs else 'assets/img/cars/placeholder.svg' }}" alt="{{ car.merk }} {{ car.model }}" loading="lazy">
+                {% if car.is_sold %}
+                  <div class="car-card__badges">
+                    <span class="car-card__badge car-card__badge--sold">Verkocht</span>
+                  </div>
+                {% endif %}
+              </div>
+              <div class="car-card__content">
+                <div class="car-card__header">
+                  <div class="car-card__titles">
+                    <p class="car-card__brand">{{ car.merk or "" }}</p>
+                    <h3 class="car-card__title">{{ car.model or "" }}</h3>
+                  </div>
+                </div>
+                {% if car.uitvoering %}<p class="car-card__subtitle">{{ car.uitvoering }}</p>{% endif %}
+                <dl class="car-card__specs">
+                  <div class="spec">
+                    <dd>{{ car.km_stand_formatted }} km</dd>
+                  </div>
+                  <div class="spec">
+                    <dd>{{ car.bouwjaar_year }}</dd>
+                  </div>
+                  <div class="spec">
+                    <dd>{{ car.brandstof or 'n.b.' }}</dd>
+                  </div>
+                </dl>
+                <div class="car-card__footer">
+                  <div class="car-card__price-group">
+                    <span class="car-card__price">{{ car.prijs or "Prijs op aanvraag" }}</span>
+                    {% if car['btw-auto'] %}<span class="car-card__price-btw">Incl. BTW</span>{% endif %}
+                    {% if car.leasePrice %}<span class="car-card__lease">Lease vanaf €{{ car.leasePrice }},- p/m</span>{% endif %}
+                  </div>
+                </div>
+              </div>
+            </article>
+            {% endfor %}
+          </div>
+          <div id="no-results" class="no-results-indicator" style="display: none;">
+            <p>Geen auto's gevonden die aan uw selectie voldoen.</p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+          <div class="footer-inner">
+            <div class="footer-col">
+              <h4 class="footer-title">Rody Kuiper Auto's</h4>
+              <p>Exclusieve auto's, met passie en expertise voor u geselecteerd.</p>
+            </div>
+            <div class="footer-col">
+              <h4 class="footer-title">Navigatie</h4>
+              <a href="index.html" class="footer-link">Home</a>
+              <a href="voorraad.html" class="footer-link">Aanbod</a>
+              <a href="lease.html" class="footer-link">Lease</a>
+              <a href="contact.html" class="footer-link">Contact</a>
+            </div>
+            <div class="footer-col">
+              <h4 class="footer-title">Contact</h4>
+              <p>Industrieweg 34<br>7951 TA Staphorst</p>
+              <a href="tel:+31638058069" class="footer-link">(+31) 6 38 05 80 69</a>
+              <a href="mailto:rody@rodykuiper.nl" class="footer-link">rody@rodykuiper.nl</a>
+            </div>
+            <div class="footer-col">
+              <h4 class="footer-title">Openingstijden</h4>
+              <p>Flexibel op afspraak, ook 's avonds en in het weekend.</p>
+            </div>
+          </div>
+          <div class="footer-bottom">
+            <p>© <span id="year"></span> Rody Kuiper Auto's. Alle rechten voorbehouden.</p>
+          </div>
+        </div>
+      </footer>
+  </div>
+
+  <!-- JS -->
+  <script src="js/main.js" defer></script>
+  <script src="js/voorraad.js" defer></script>
+</body>
+</html>
