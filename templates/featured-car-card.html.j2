@@ -1,0 +1,20 @@
+<a class="car-card" href="voorraad/{{ car.slug }}-{{ car.id }}.html">
+  <div class="car-image-wrap">
+    <img src="{{ car.imgs[0] if car.imgs else 'assets/img/cars/placeholder.svg' }}" alt="{{ car.merk or '' }} {{ car.model or '' }}" loading="lazy">
+  </div>
+  <div class="car-content">
+    <div class="car-title-row">
+      <h3 class="car-title">{{ car.merk or '' }} {{ car.model or '' }}</h3>
+      <div class="car-price-block">
+        <p class="car-price">{{ car.prijs or 'Prijs op aanvraag' }}</p>
+      </div>
+    </div>
+    <div class="car-card-specs">
+      <span>{{ car.bouwjaar_year or 'n.b.' }}</span>
+      <span>|</span>
+      <span>{{ car.km_stand_formatted }} km</span>
+      <span>|</span>
+      <span>{{ car.brandstof or 'n.b.' }}</span>
+    </div>
+  </div>
+</a>

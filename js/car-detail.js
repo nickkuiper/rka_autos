@@ -73,7 +73,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function initContactForm() {
     const contactToggle = document.querySelector('.contact-toggle');
-    const contactForm = document.getElementById('contact_form');
+    const contactForm = document.getElementById('contact-form');
     const contactResult = document.querySelector('.contact-result');
 
     if (contactToggle && contactForm) {
@@ -99,13 +99,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const toggleButton = document.getElementById('toggle-lease-calculator');
     const iframeContainer = document.getElementById('lease-iframe-container');
     const iframeWrapper = document.getElementById('lease-iframe');
-    
+
     if (!toggleButton || !iframeContainer || !iframeWrapper) return;
 
     const priceNum = document.body.dataset.priceNum;
     if (!priceNum || priceNum === "0") {
-        toggleButton.style.display = 'none';
-        return;
+      toggleButton.style.display = 'none';
+      return;
     }
 
     let iframeLoaded = false;

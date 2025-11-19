@@ -4,6 +4,7 @@ import requests
 import jinja2
 import shutil
 import re
+import random
 from datetime import datetime
 
 # --- Configuration ---
@@ -122,6 +123,38 @@ def process_car_data(car):
     
     return car
 
+def render_index_page(env, all_cars):
+    """Renders the index page with featured cars."""
+    print("Rendering index.html with featured cars...")
+    try:
+        # 1. Filter for available cars and select 3 random ones
+        available_cars = [car for car in all_cars if not car.get('is_sold')]
+        if len(available_cars) > 3:
+            featured_cars = random.sample(available_cars, 3)
+        else:
+            featured_cars = available_cars
+        print(f"Selected {len(featured_cars)} featured cars.")
+
+        # 2. Render the car cards
+        card_template = env.get_template("featured-car-card.html.j2")
+        featured_html = "".join([card_template.render(car=car) for car in featured_cars])
+
+        # 3. Read the base index.html
+        with open("index.html", "r", encoding="utf-8") as f:
+            index_content = f.read()
+
+        # 4. Inject the featured cars HTML
+        placeholder = '<!-- Featured cars will be injected here by deploy.py -->'
+        index_content = index_content.replace(placeholder, featured_html)
+
+        # 5. Write the final index.html to the dist directory
+        with open(os.path.join(OUTPUT_DIR, "index.html"), "w", encoding="utf-8") as f:
+            f.write(index_content)
+        print("Rendered index.html")
+
+    except Exception as e:
+        print(f"Error rendering index.html: {e}")
+
 # --- Main Build Script ---
 
 def main():
@@ -182,20 +215,23 @@ def main():
     except jinja2.TemplateError as e:
         print(f"Error rendering detail pages: {e}")
 
-    # 7. Copy static assets
+    # 7. Render index page with featured cars
+    render_index_page(env, all_cars)
+
+    # 8. Copy static assets and other root files
     for static_dir in STATIC_DIRS:
         shutil.copytree(static_dir, os.path.join(OUTPUT_DIR, static_dir))
     print(f"Copied static directories: {', '.join(STATIC_DIRS)}")
     
-    # Also copy root files
-    root_files_to_copy = ['index.html', 'lease.html', 'contact.html', 'car-detail.html']
+    # Also copy remaining root files
+    root_files_to_copy = ['lease.html', 'contact.html', 'car-detail.html']
     for file_name in root_files_to_copy:
         if os.path.exists(file_name):
             shutil.copy(file_name, os.path.join(OUTPUT_DIR, file_name))
-    print(f"Copied root HTML files.")
+    print(f"Copied remaining root HTML files.")
 
 
-    # 8. Generate sitemap.xml
+    # 9. Generate sitemap.xml
     sitemap_template_str = """<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">\n    <url>\n        <loc>{{ site_url }}/voorraad.html</loc>\n        <lastmod>{{ now }}</lastmod>\n        <changefreq>daily</changefreq>\n        <priority>0.8</priority>\n    </url>\n    {% for car in cars %}\n    <url>\n        <loc>{{ site_url }}/voorraad/{{ car.slug }}-{{ car.id }}.html</loc>\n        <lastmod>{{ now }}</lastmod>\n        <changefreq>daily</changefreq>\n        <priority>0.6</priority>\n    </url>\n    {% endfor %}\n</urlset>"""
     try:
         sitemap_template = env.from_string(sitemap_template_str)
